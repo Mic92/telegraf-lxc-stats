@@ -1,15 +1,15 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"strconv"
-	"strings"
+	"io/ioutil"
 	"reflect"
 	"regexp"
-	"errors"
-	"io/ioutil"
+	"strconv"
+	"strings"
 
-	"gopkg.in/lxc/go-lxc.v2"
+	"github.com/lxc/go-lxc"
 	"github.com/shirou/gopsutil/mem"
 )
 
@@ -44,7 +44,7 @@ func genLineProtMsg(m map[string]map[string]interface{}) string {
 	return strings.Join(output_list, "\n")
 }
 
-// takes string from cgroup cpuset.cpus and return number of cores, eg. takes "0-3,26" and return 5 
+// takes string from cgroup cpuset.cpus and return number of cores, eg. takes "0-3,26" and return 5
 func countCores(cpus string) int {
 	cpus_array := strings.Split(cpus, ",")
 	r := regexp.MustCompile(`^(\d+)-(\d+)$`)
@@ -299,7 +299,7 @@ func main() {
 	}
 
 	for _ = range lxcList {
-		var msg Msg = <- channel
+		var msg Msg = <-channel
 		lxcData[msg.Host] = msg.Data
 	}
 
